@@ -28,7 +28,7 @@ const browserInit = async () =>{
 
     for (const element of profilesList) {
 
-        const link =  await element.evaluate(handle=>handle.querySelector('a').href.split('?')[0].concat("/overlay/contact-info/"))
+        const link =  await element.evaluate(handle=>handle.querySelector('a').href.split('?')[0])
         profilesUrls.push(link)
         
     }
@@ -41,33 +41,32 @@ const browserInit = async () =>{
         }
         const url = profilesUrls[0]
         anotherPage = await browser.newPage()
-        //console.log('nav1')
-        await anotherPage.goto(url, pageOptions)
-        //console.log('nav2')
+ 
+        await anotherPage.goto(url.concat("/overlay/contact-info/"), pageOptions)
 
-
-        /* const [contactInfoHandler] = await anotherPage.$x('//*[@id="top-card-text-details-contact-info"]')
-        console.log(contactInfoHandler)
-        await contactInfoHandler.click()
-        console.log('nav3')*/
+       
         await anotherPage.waitForXPath('//div[@data-test-modal]')
-        //console.log('nav4')
+  
         const [modal] = await anotherPage.$x('//div[@data-test-modal]')  
         
         await modal.waitForSelector('h3')
         const contactInfoNodeList = await modal.$x('(.//div[./section])[2]/section')
-        //console.log(contactInfoNodeList)
+ 
         for (const info of contactInfoNodeList) {
             const infoName = await (await info.$('h3')).evaluate(element=>element.textContent.trim('\n').trim())
-            //console.log(infoName)
-            //agregar or operator spath con 'ul'
             person.contact[infoName] = await (await info.$('h3 + div '))?.evaluate(element=>element.textContent.trim())
         }
-        await anotherPage.keyboard.press("Abort")
+        await anotherPage.goto(url, pageOptions)
 
+        await anotherPage.evaluate(e=>{
+            let y = 60
+            const a = setInterval(()=>{if (y>document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight){clearInterval(a)}; scroll(0,y); y+=60}, 500)
+            })
+
+       
         const  [education]  = await anotherPage.$x('.//main//section[.//span[contains(text(),"Educación")]]')
         
-        const educationItems = await education.$x("(.//ul)[1]/li")
+        const educationItems = await education?.$x("(.//ul)[1]/li")
        
         for (let item of educationItems) {
             const [Item]= await item.$x(".//div[2]//div//a")
