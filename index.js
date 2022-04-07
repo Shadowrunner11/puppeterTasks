@@ -15,7 +15,7 @@ const scrapProfiles = async () =>{
     
     //page = browser.newPage(pageOptions)
     for (const url of profilesUrls) {
-        const person = await scrapProfile(url, page, options)
+        const person = await scrapProfile(url, page, pageOptions)
         persons.push(person)
 
     }
