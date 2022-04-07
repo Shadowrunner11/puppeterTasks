@@ -1,0 +1,42 @@
+Arguments: 
+  /usr/bin/node /home/piero/.yarn/releases/yarn-1.23.0-20220130.1630.cjs add puppeter
+
+PATH: 
+  /home/piero/.deno/bin:/home/piero/.poetry/bin:/home/piero/.poetry/bin:/home/piero/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.23.0-20220130.1630
+
+Node version: 
+  16.14.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/puppeter: Not found
+      at Request.params.callback [as _callback] (/home/piero/.yarn/releases/yarn-1.23.0-20220130.1630.cjs:78518:18)
+      at Request.self.callback (/home/piero/.yarn/releases/yarn-1.23.0-20220130.1630.cjs:135160:22)
+      at Request.emit (node:events:520:28)
+      at Request.<anonymous> (/home/piero/.yarn/releases/yarn-1.23.0-20220130.1630.cjs:136132:10)
+      at Request.emit (node:events:520:28)
+      at IncomingMessage.<anonymous> (/home/piero/.yarn/releases/yarn-1.23.0-20220130.1630.cjs:136054:12)
+      at Object.onceWrapper (node:events:639:28)
+      at IncomingMessage.emit (node:events:532:35)
+      at endReadableNT (node:internal/streams/readable:1346:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "scrapper1",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Piero <matematicadivina1@gmail.com>",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
