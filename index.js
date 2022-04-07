@@ -29,6 +29,7 @@ const browserInit = async () =>{
     console.log(profilesList)
 }
 
+browserInit()
 
 
 
