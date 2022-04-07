@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "Piero <matematicadivina1@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "node index.js"
   },
