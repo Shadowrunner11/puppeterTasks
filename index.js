@@ -2,7 +2,7 @@ import {} from 'dotenv/config'
 import puppeteer from "puppeteer"
 import  Dayjs  from "dayjs";
 
-const options = {headless: true}
+const options = {headless: false}
 const pageOptions = {waitUntil: 'networkidle2'}
 let browser
 let page
@@ -32,15 +32,15 @@ const browserInit = async () =>{
         profilesUrls.push(link)
         
     }
+    anotherPage = await browser.newPage()
 
-    //for (const url of profilesUrls) {
-        const person = {
-            contact: {},
-            education:[],
-            experience:[]
-        }
-        const url = profilesUrls[0]
-        anotherPage = await browser.newPage()
+    const person = {
+        contact: {},
+        education:[],
+        experience:[]
+    }
+    for (const url of profilesUrls) {
+        //const url = profilesUrls[0]
  
         await anotherPage.goto(url.concat("/overlay/contact-info/"), pageOptions)
 
@@ -53,8 +53,10 @@ const browserInit = async () =>{
         const contactInfoNodeList = await modal.$x('(.//div[./section])[2]/section')
  
         for (const info of contactInfoNodeList) {
+            console.log("into nodal:", info)
             const infoName = await (await info.$('h3')).evaluate(element=>element.textContent.trim('\n').trim())
             person.contact[infoName] = await (await info.$('h3 + div '))?.evaluate(element=>element.textContent.trim())
+            console.log("saleindo del bucle del modal")
         }
         await anotherPage.goto(url, pageOptions)
 
@@ -118,9 +120,9 @@ const browserInit = async () =>{
         }
         
         
-    //}
+        //console.log(JSON.stringify(person))
+    }
     browser.close()
-    console.log(JSON.stringify(person))
     return person
 }
 /* 
