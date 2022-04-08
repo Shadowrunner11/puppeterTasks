@@ -1,4 +1,5 @@
 const autoscroll = new Promise((resolve, reject)=>{
+    let y = 60
     const a = setInterval(()=>{
         if (y>document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight){
             clearInterval(a);

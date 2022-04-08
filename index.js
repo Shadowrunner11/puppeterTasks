@@ -9,7 +9,7 @@ const pageOptions = {waitUntil: 'networkidle2'}
 
 const scrapProfiles = async () =>{
     const persons = []
-    let [browser, page] = await browserInit(options)
+    let [browser, page] = await browserInit(options, pageOptions)
 
     const profilesUrls = await getProfilesUrl(page)
     

@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer"
 
-const browserInit = async (options) =>{
+const browserInit = async (options, pageOptions) =>{
     let browser = await puppeteer.launch(options)
     let page = await browser.newPage()
     //Incio de sesion

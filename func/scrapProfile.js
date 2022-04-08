@@ -1,5 +1,5 @@
 import  Dayjs  from "dayjs";
-import autoscroll from "./autoscroll.js";
+
 
 const scrapProfile =async (url, page, pageOptions)=>{
 
@@ -9,8 +9,12 @@ const scrapProfile =async (url, page, pageOptions)=>{
         education:[],
         experience:[]
     }
-
-    await page.goto(url.concat("/overlay/contact-info/"), pageOptions)
+    try {
+        await page.goto(url.concat("/overlay/contact-info/"), pageOptions)
+    
+    } catch (error) {
+        console.log(error)
+    }
     await page.waitForXPath('//div[@data-test-modal]')
 
     const [modal] = await page.$x('//div[@data-test-modal]')  
@@ -28,14 +32,20 @@ const scrapProfile =async (url, page, pageOptions)=>{
     await page.goto(url, pageOptions)
 
     await page.evaluate(async e=>{
-        let y = 60
-        
+        const autoscroll = new Promise((resolve, reject)=>{
+            let y = 60
+            const a = setInterval(()=>{
+                if (y>document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight){
+                    clearInterval(a);
+                    resolve(true)
+                }; scroll(0,y); y+=60}, 500)
+        })
         await autoscroll
     })
 
 
 
-    const  [education]  = await anotherPage.$x('.//main//section[.//span[contains(text(),"Educación")]]')
+    const  [education]  = await page.$x('.//main//section[.//span[contains(text(),"Educación")]]')
     
     const educationItems = await education?.$x("(.//ul)[1]/li")
 
@@ -47,18 +57,24 @@ const scrapProfile =async (url, page, pageOptions)=>{
         let date = await(await Item.$('span.t-black--light > span:nth-child(1)'))?.evaluate(element=>element.textContent.trim())
     
 
-    let fecha = date?.split("·")[0].split("-").map(e=>Dayjs(e.trim()).$d)
-    let [start, end] = fecha
-    person.education.push({
-        name,
-        "description": description===date?null:description ,
-        "date": {
-            start, end
+        let fecha = date?.split("·")[0].split("-").map(e=>Dayjs(e.trim()).$d)
+        let start
+        let end
+        if (fecha){
+            
+            [start, end] = fecha 
+            console.log(start, end)
         }
-    })
+        person.education.push({
+            name,
+            "description": description===date?null:description ,
+            "date": {
+                start, end
+            }
+        })
     }
 
-    const  [experience]  = await anotherPage.$x('.//main//section[.//span[contains(text(),"Experiencia")]]')
+    const  [experience]  = await page.$x('.//main//section[.//span[contains(text(),"Experiencia")]]')
     
     const experienceItems = await experience.$x("(.//ul)[1]/li")
     
